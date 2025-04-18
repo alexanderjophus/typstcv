@@ -50,23 +50,26 @@
   linebreak()
 }
 
-#let education(
-  university: "",
-  degree: "",
-  graduation_date: "",
-  result: "",
-  dissertation_title: "",
-) = {
+#let education(education_items) = {
   section_header("Education")
   linebreak()
-  text(12pt, weight: "medium")[#university]
+  for edu in education_items {
+      text(12pt, weight: "medium")[#edu.university]
+      linebreak()
+      text(9pt)[#edu.degree]
+      linebreak()
+      text(9pt)[#edu.graduation_date | #edu.result]
+      linebreak()
+      text(9pt, weight: "medium")[Dissertation: ]
+      text(9pt)[#edu.dissertation_title]
+      linebreak()
+  }
+}
+
+#let awards(awards) = {
+  section_header("Awards & Honours")
   linebreak()
-  text(9pt)[#degree]
-  linebreak()
-  text(9pt)[#graduation_date | #result]
-  linebreak()
-  text(9pt, weight: "medium")[Dissertation: ]
-  text(9pt)[#dissertation_title]
+  text(9pt)[#awards.map(a => "• " + a).join(linebreak())]
   linebreak()
 }
 
@@ -125,9 +128,9 @@
   align(center, text(20pt)[= #name])
 
   align(center, text(14pt, email + " • " + text(fill: primary_colour, title) + " • " + phone_number))
-  
+
   line(stroke: 1pt + primary_colour, length: 100%)
-  
+
   grid(
     columns: (2fr, 5fr),
     rows: (auto, auto),
